@@ -12,13 +12,14 @@ docker-compose up -d
 It may take up to 1 minute to startup entire infrastructure as there are some dependencies in the containers.
 
 The above will:
-    - start the multiple consul servers in "different data centers"
-    - start multiple agents simulating real vms with registered service
-    - Expose the following ports to your host environment:
-        - `8500` - eu-dc
-        - `8501` - eu-dc2
-        - `8502` - us-dc
-        - `8503` - asia-dc
+
+- start the multiple consul servers in "different data centers"
+- start multiple agents simulating real vms with registered service
+- expose the following ports to your host environment:
+    - `8500` - eu-dc
+    - `8501` - eu-dc2
+    - `8502` - us-dc
+    - `8503` - asia-dc
 
 
 
