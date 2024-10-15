@@ -1,2 +1,8 @@
 consul-home
 certs
+**/__debug*
+
+# binaries
+consul-svc
+./fw-manager
+consul-config-gen
