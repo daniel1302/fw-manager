@@ -235,7 +235,111 @@ services:
       - NODE_STAGE=prod
     networks:
       vpc_consul:
-        ipv4_address: 10.5.10.7
+        ipv4_address: 10.5.20.1
+  node-01-eu-dc2-backups.prod:
+    depends_on: *agent_deps
+    image: *consul_image
+    build: *consul_svc_image_build
+    volumes:
+      - ./consul-home/node-01.eu-dc2.backups.prod:/consul-home
+    environment:
+      - DATA_CENTER=eu-dc2
+      - DATA_DIR=/consul/home
+      - NODE_NAME=node-01.eu-dc2.backups.prod
+      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - NODE_ENV=backups
+      - NODE_STAGE=prod
+    networks:
+      vpc_consul:
+        ipv4_address: 10.5.20.2
+  node-02-eu-dc2-backups.prod:
+    depends_on: *agent_deps
+    image: *consul_image
+    build: *consul_svc_image_build
+    volumes:
+      - ./consul-home/node-02.eu-dc2.backups.prod:/consul-home
+    environment:
+      - DATA_CENTER=eu-dc2
+      - DATA_DIR=/consul/home
+      - NODE_NAME=node-02.eu-dc2.backups.prod
+      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - NODE_ENV=backups
+      - NODE_STAGE=prod
+    networks:
+      vpc_consul:
+        ipv4_address: 10.5.20.3
+  # US-DC
+  node-01-us-dc1-backups.test:
+    depends_on: *agent_deps
+    image: *consul_image
+    build: *consul_svc_image_build
+    volumes:
+      - ./consul-home/node-01.us-dc.backups.prod:/consul-home
+    environment:
+      - DATA_CENTER=us-dc
+      - DATA_DIR=/consul/home
+      - NODE_NAME=node-01.us-dc.backups.prod
+      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - NODE_ENV=backups
+      - NODE_STAGE=test
+    networks:
+      vpc_consul:
+        ipv4_address: 10.5.30.1
+  node-02-us-dc1-backups.test:
+    depends_on: *agent_deps
+    image: *consul_image
+    build: *consul_svc_image_build
+    volumes:
+      - ./consul-home/node-02.us-dc.backups.test:/consul-home
+    environment:
+      - DATA_CENTER=us-dc
+      - DATA_DIR=/consul/home
+      - NODE_NAME=node-02.us-dc.backups.test
+      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - NODE_ENV=backups
+      - NODE_STAGE=test
+    networks:
+      vpc_consul:
+        ipv4_address: 10.5.30.2
+  node-01-us-dc1-apps.prod:
+    depends_on: *agent_deps
+    image: *consul_image
+    build: *consul_svc_image_build
+    volumes:
+      - ./consul-home/node-01.us-dc.apps.prod:/consul-home
+    environment:
+      - DATA_CENTER=us-dc
+      - DATA_DIR=/consul/home
+      - NODE_NAME=node-01.us-dc.apps.prod
+      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - NODE_ENV=apps
+      - NODE_STAGE=prod
+    networks:
+      vpc_consul:
+        ipv4_address: 10.5.30.3
+  # ASIA-DC
+  node-01-asia-dc1-apps.test:
+    depends_on: *agent_deps
+    image: *consul_image
+    build: *consul_svc_image_build
+    volumes:
+      - ./consul-home/node-01.asia-dc.apps.test:/consul-home
+    environment:
+      - DATA_CENTER=asia-dc
+      - DATA_DIR=/consul/home
+      - NODE_NAME=node-01.asia-dc.apps.test
+      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - NODE_ENV=apps
+      - NODE_STAGE=test
+    networks:
+      vpc_consul:
+        ipv4_address: 10.5.40.1
+
+
+#   - backups.prod
+#   - backups.test
+#   - app.prod
+#   - app.test
 
 networks:
   vpc_consul:

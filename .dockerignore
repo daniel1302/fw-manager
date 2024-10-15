@@ -1,0 +1,3 @@
+consul-home
+docker
+!docker/entrypoint.sh
