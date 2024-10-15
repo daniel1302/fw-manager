@@ -1,5 +1,24 @@
 # fw-manager
 
+## Replicate multi-cluster consul infrastructure with docker-compose.yaml
+
+```shell
+# If you are experimenting you may want to remove consul homes and recreate clusters from the scratch.
+rm -rf ./consul-home
+
+docker-compose up -d
+```
+
+It may take up to 1 minute to startup entire infrastructure as there are some dependencies in the containers.
+
+The above will:
+    - start the multiple consul servers in "different data centers"
+    - start multiple agents simulating real vms with registered service
+    - Expose the following ports to your host environment:
+        - `8500` - eu-dc
+        - `8501` - eu-dc2
+        - `8502` - us-dc
+        - `8503` - asia-dc
 
 
 
