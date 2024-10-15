@@ -43,9 +43,9 @@ func (api *ConsulAPIClient) GetDataCenters() ([]string, error) {
 	return api.client.Catalog().Datacenters()
 }
 
-func (api *ConsulAPIClient) GetFleetCatalog(datacenters []string) error {
+func (api *ConsulAPIClient) GetFleetCatalog(datacenters []string) ([]*consulapi.CatalogService, error) {
 	if api.client == nil {
-		return ErrMissingConsulClient
+		return nil, ErrMissingConsulClient
 	}
 
 	allServices := []*consulapi.CatalogService{}
@@ -55,13 +55,11 @@ func (api *ConsulAPIClient) GetFleetCatalog(datacenters []string) error {
 			Datacenter: dc,
 		})
 		if err != nil {
-			return fmt.Errorf("failed to get catalog for the \"%s\" service in %s DC: %w", PrimaryServiceName, dc, err)
+			return nil, fmt.Errorf("failed to get catalog for the \"%s\" service in %s DC: %w", PrimaryServiceName, dc, err)
 		}
 
 		allServices = append(allServices, resp...)
 	}
 
-	fmt.Println(allServices)
-
-	return nil
+	return allServices, nil
 }

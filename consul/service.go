@@ -1,5 +1,0 @@
-package consul
-
-func parse() {
-
-}
