@@ -1,0 +1,70 @@
+# services
+#   - metrics.prod
+#   - metrics.test
+#   - logs.prod
+#   - logs.test
+#   - backups.prod
+#   - backups.test
+#   - app.prod
+#   - app.test
+# Network 10.10.0.0/16
+services:
+  consul_server:
+    image: consul:1.15.4
+    ports:
+      - "8500:8500"
+      - "8600:8600"
+      # - "8301"
+    entrypoint: consul
+    volumes:
+      - ./consul-home/server:/consul-home
+    command: [
+      "agent", 
+        "-server", 
+        "-ui", 
+        "-node", "server-1", 
+        "-bootstrap-expect", "1", 
+        "-client", "0.0.0.0", 
+        "--data-dir", "/consul-home"
+      ]
+    networks:
+      vpc_consul:
+        ipv4_address: 10.5.0.5
+  fox:
+    image: consul:1.15.4
+    entrypoint: consul
+    ports:
+      - "8501:8081"
+    volumes:
+      - ./consul-home/fox:/consul-home
+    # command: ["-c", "sleep 10000000"]
+    command: [
+      "agent", 
+      "-node", "fox", 
+      "-retry-join", "10.5.0.5",
+      "--data-dir", "/consul-home",
+      "--http-port", "8081"
+    ]
+    networks:
+      vpc_consul:
+        ipv4_address: 10.5.10.1
+    
+    
+  #   docker run \
+  #  --name=fox \
+  #  consul agent -node=client-1 -retry-join=172.17.0.2
+
+
+networks:
+  vpc_consul:
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+
+
+    # docker run \
+    # -d \
+    # -p 8500:8500 \
+    # -p 8600:8600/udp \
+    # --name=badger \
+    # consul agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
