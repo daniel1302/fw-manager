@@ -3,6 +3,6 @@ certs
 **/__debug*
 
 # binaries
-consul-svc
+./consul-svc
 ./fw-manager
-consul-config-gen
+./consul-config-gen

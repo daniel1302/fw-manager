@@ -69,6 +69,11 @@ func register() error {
 			"env":   svcEnv,
 			"stage": svcStage,
 		},
+		Tags: []string{
+			fmt.Sprintf("%s.%s", svcEnv, svcStage),
+			"wireguard",
+			"vpn",
+		},
 	}
 
 	if err = consul.Agent().ServiceRegister(registeration); err != nil {
