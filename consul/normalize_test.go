@@ -17,45 +17,23 @@ func TestNormalize(t *testing.T) {
 	}
 
 	t.Run("Normalize example data", func(t *testing.T) {
-		normalizedCatalog, err := consul.NormalizeCatalog(consulCatalog)
-		assert.NoError(t, err)
-		assert.EqualValues(t, normalizedCatalog, types.FleetCatalog{
-			types.FleetAll: []types.FleetItem{
-				{
-					Node:    "node-01.eu-dc1.metrics.prod",
-					Address: "10.10.0.17",
-				},
-				{
-					Node:    "node-02.eu-dc1.metrics.prod",
-					Address: "10.10.0.18",
-				},
-				{
-					Node:    "node-01.eu-dc1.metrics.test",
-					Address: "10.10.0.19",
-				},
-				{
-					Node:    "node-01.eu-dc1.logs.prod",
-					Address: "10.10.0.20",
-				},
-				{
-					Node:    "node-01.eu-dc1.logs.test",
-					Address: "10.10.0.22",
-				},
-				{
-					Node:    "node-01.eu-dc1.backups.prod",
-					Address: "10.10.0.23",
-				},
-			},
+		expected := types.FleetCatalog{
 			types.FleetMetrics: []types.FleetItem{
 				{
+					Type:    types.FleetMetrics,
+					ID:      "b27a1a90-dff4-4ff8-9fe8-cc3b573a85b7",
 					Node:    "node-01.eu-dc1.metrics.prod",
 					Address: "10.10.0.17",
 				},
 				{
+					Type:    types.FleetMetrics,
+					ID:      "03deab88-ddd4-46ca-a38a-e75a4635c3a3",
 					Node:    "node-02.eu-dc1.metrics.prod",
 					Address: "10.10.0.18",
 				},
 				{
+					Type:    types.FleetMetrics,
+					ID:      "16c59e2d-7589-4c87-85a1-6550d7fd6f8c",
 					Node:    "node-01.eu-dc1.metrics.test",
 					Address: "10.10.0.19",
 				},
@@ -63,21 +41,31 @@ func TestNormalize(t *testing.T) {
 
 			types.FleetLogs: []types.FleetItem{
 				{
+					Type:    types.FleetLogs,
+					ID:      "c98551e3-fbda-4b3a-9d83-b2a720150d2e",
 					Node:    "node-01.eu-dc1.logs.prod",
 					Address: "10.10.0.20",
 				},
 				{
+					Type:    types.FleetLogs,
+					ID:      "aa02244b-8015-4d04-b262-3e8dc858f6de",
 					Node:    "node-01.eu-dc1.logs.test",
 					Address: "10.10.0.22",
 				},
 			},
 			types.FleetBackups: []types.FleetItem{
 				{
+					Type:    types.FleetBackups,
+					ID:      "f2dac58a-4377-4cc2-9fe5-cbc483c82f4f",
 					Node:    "node-01.eu-dc1.backups.prod",
 					Address: "10.10.0.23",
 				},
 			},
-		})
+		}
+
+		normalizedCatalog, err := consul.NormalizeCatalog(consulCatalog)
+		assert.NoError(t, err)
+		assert.EqualValues(t, expected, normalizedCatalog)
 	})
 
 	t.Run("Normalize empty catalog", func(t *testing.T) {
