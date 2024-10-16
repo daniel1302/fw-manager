@@ -12,9 +12,7 @@ import (
 )
 
 type fmArgs struct {
-	withSSH  bool
-	cleanAll bool
-	dryRun   bool
+	dryRun bool
 
 	consulCatalogFilePath string
 	networkCIDR           string
@@ -24,8 +22,6 @@ type fmArgs struct {
 var args fmArgs
 
 func init() {
-	flag.BoolVar(&args.withSSH, "with-ssh", true, "Decide if SSH port should be open. If false only hardcoded logic is applied")
-	flag.BoolVar(&args.cleanAll, "clean-all", false, "Decide if all remaining rules should be removed")
 	flag.BoolVar(&args.dryRun, "dry-run", false, "Decide if rules should be only printed to the output and not applied")
 	flag.StringVar(&args.consulCatalogFilePath, "consul-catalog-file-path", "", "If not empty binary won't fetch catalog from consul API. Instead it will use given file")
 	flag.StringVar(&args.networkCIDR, "network-cidr", "10.10.0.0/16", "The network CIDR for the wireguard")
@@ -44,16 +40,44 @@ func main() {
 		log.Fatal("this computer does not belong to the managed network", err)
 	}
 
-	firewallRules := system.PrepareFirewallRules(*thisComputerFleet, &normalizedFleetCatalog)
+	catalogRules := system.PrepareFirewallRules(*thisComputerFleet, &normalizedFleetCatalog)
+
+	iptables, err := system.NewFirewallManager(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	existingRules, err := iptables.ListManagedFirewallRules()
+	if err != nil {
+		panic(err)
+	}
+
+	oldRules, newRules, err := system.PrepareRulesExecutionPlan(existingRules, catalogRules)
+	if err != nil {
+		panic(err)
+	}
+
+	printRules(newRules, oldRules)
 
 	if args.dryRun {
-		log.Println("Dry run only")
-
-		for _, rule := range firewallRules {
-			log.Printf("Open port %d for %s\n", rule.Port, rule.IP)
-		}
-
+		log.Println("Dry run, execution skipped")
 		return
+	}
+
+	if err := iptables.ExecuteRules(newRules, oldRules); err != nil {
+		panic(err)
+	}
+}
+
+func printRules(new []system.FirewallRule, old []system.FirewallRule) {
+	log.Println("Deleted rules:")
+	for _, rule := range old {
+		log.Printf("  - Port: %d, source: %s\n", rule.Port, rule.IP)
+	}
+
+	log.Println("New rules:")
+	for _, rule := range new {
+		log.Printf("  - Port: %d, source: %s\n", rule.Port, rule.IP)
 	}
 }
 
@@ -120,7 +144,7 @@ func matchFleetServerToThisHost(ipOverride string, networkCIDR string, normalize
 		log.Printf("Checking IP: %s", localIP.String())
 
 		if !wireguardCIDR.Contains(localIP) {
-			log.Printf("... IP does not belong to wireguard cidr")
+			log.Printf("... IP does not belong to wireguard cidr\n")
 			continue
 		}
 
