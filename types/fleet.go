@@ -10,7 +10,6 @@ type FleetType string
 
 const (
 	FleetUnknown FleetType = "unknown"
-	FleetAll     FleetType = "all"
 	FleetLogs    FleetType = "logs"
 	FleetMetrics FleetType = "metrics"
 	FleetApp     FleetType = "app"
@@ -18,6 +17,8 @@ const (
 )
 
 type FleetItem struct {
+	Type    FleetType
+	ID      string
 	Node    string
 	Address string
 }
