@@ -28,6 +28,7 @@ func init() {
 }
 
 func main() {
+	//nolint:errcheck
 	register()
 
 	log.Fatal(runHTTPServer(httpSvcPost))
