@@ -1,2 +1,10 @@
+#misc 
 consul-home
 certs
+**/__debug*
+project-notes.txt
+
+# binaries
+./consul-svc
+./fw-manager
+./consul-config-gen
