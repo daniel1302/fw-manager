@@ -25,6 +25,48 @@ The above will:
 
 ## Binaries
 
+### fw-manager
+
+The main binary in this repository responsible for setting iptables rules based on the business logic for specific infrastructure. The binary uses consul catalog to discover infrastructure.
+
+Flags:
+
+- `--dry-run` - Disables the execution step. Program just prints what rules will be deleted and added.
+- `--consul-catalog-file-path` - Specify local file for the consul catalog. If empty catalog will be collected from `https://localhost:8500/...`.
+- `--network-cidr` - Specify the network CIDR which this binary will manage.
+- `--ip-override` - Useful for testing. If empty the binary will search IP assigned to any local interface that belongs to the network specified in `--network-cidr` subnet.
+
+#### Build
+
+```shell
+go build -o ./fw-firewall cmd/fw-manager/main.go
+```
+
+#### Usage
+
+With Consul API - Usage on the production
+
+```shell
+./fw-manager
+```
+
+Locally with docker-compose.yaml - Useful for local development
+
+With consul-api:
+
+```shell
+docker-compose up -d
+
+./fw-manager --ip-override 10.10.20.1
+```
+
+With local consul catalog
+```shell
+docker-compose up -d
+
+./fw-manager --ip-override 10.10.0.17 --consul-catalog-file-path", "${workspaceFolder}/services.json",
+```
+
 ### consul-config-gen
 
 Simple helper binary used to bootstrap node in docker.

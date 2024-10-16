@@ -39,7 +39,7 @@ func init() {
 	flag.StringVar(&templateVars.DataCenter, "data-center", "dc1", "Data center")
 	flag.StringVar(&templateVars.DataDir, "data-dir", "/consul-home", "Data dir for consul agent")
 	flag.StringVar(&templateVars.NodeName, "node-name", "some-node", "Node name for consul agent")
-	flag.StringVar(&retryJoinIPsList, "retry-join-ip", "10.5.0.5", "IP of the consul server")
+	flag.StringVar(&retryJoinIPsList, "retry-join-ip", "10.10.0.5", "IP of the consul server")
 	flag.StringVar(&templateVars.NodeEnv, "node-env", "metrics", "Node env for consul node metadata")
 	flag.StringVar(&templateVars.NodeStage, "node-stage", "prod", "Node stage for consul node metadata")
 

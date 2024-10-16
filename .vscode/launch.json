@@ -12,6 +12,18 @@
             "program": "${workspaceFolder}/cmd/fw-manager/main.go",
             "args": []
         },
+
+        {
+            "name": "fw-manager - consul api - ip-override",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/fw-manager/main.go",
+            "args": [
+                "--ip-override", "10.10.10.1"
+            ],
+            "sudo": true
+        },
         {
             "name": "fw-manager - local consul catalog",
             "type": "go",
@@ -19,7 +31,30 @@
             "mode": "auto",
             "program": "${workspaceFolder}/cmd/fw-manager/main.go",
             "args": [
-                "--consul-catalog-file-path", "${workspaceFolder}/services.json"
+                "--consul-catalog-file-path", "${workspaceFolder}/services.json",
+            ]
+        },
+        {
+            "name": "fw-manager - local consul catalog - ip override",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/fw-manager/main.go",
+            "args": [
+                "--consul-catalog-file-path", "${workspaceFolder}/services.json",
+                "--ip-override", "10.10.0.18"
+            ]
+        },
+        {
+            "name": "fw-manager - local consul catalog - ip override - dry-run",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/fw-manager/main.go",
+            "args": [
+                "--consul-catalog-file-path", "${workspaceFolder}/services.json",
+                "--ip-override", "10.10.0.26",
+                "--dry-run"
             ]
         },
     ]

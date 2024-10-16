@@ -35,7 +35,7 @@ services:
       ]
     networks:
       vpc_consul:
-        ipv4_address: 10.5.0.5
+        ipv4_address: 10.10.0.5
 
   consul-server-eu-dc2:
     depends_on: &server_main_deps
@@ -57,11 +57,11 @@ services:
         "-bootstrap-expect", "1", 
         "-client", "0.0.0.0", 
         "--data-dir", "/consul-home",
-        "--retry-join-wan", "10.5.0.5"
+        "--retry-join-wan", "10.10.0.5"
       ]
     networks:
       vpc_consul:
-        ipv4_address: 10.5.0.6
+        ipv4_address: 10.10.0.6
 
   consul-server-us-dc:
     depends_on: *server_main_deps
@@ -81,11 +81,11 @@ services:
         "-bootstrap-expect", "1", 
         "-client", "0.0.0.0", 
         "--data-dir", "/consul-home",
-        "--retry-join-wan", "10.5.0.5"
+        "--retry-join-wan", "10.10.0.5"
       ]
     networks:
       vpc_consul:
-        ipv4_address: 10.5.0.7
+        ipv4_address: 10.10.0.7
 
   consul-server-asia-dc:
     depends_on: *server_main_deps
@@ -105,11 +105,11 @@ services:
         "-bootstrap-expect", "1",
         "-client", "0.0.0.0",
         "--data-dir", "/consul-home",
-        "--retry-join-wan", "10.5.0.5"
+        "--retry-join-wan", "10.10.0.5"
       ]
     networks:
       vpc_consul:
-        ipv4_address: 10.5.0.8
+        ipv4_address: 10.10.0.8
 
 
 ## EU-DC1
@@ -132,12 +132,12 @@ services:
       - DATA_CENTER=eu-dc
       - DATA_DIR=/consul/home
       - NODE_NAME=node-01.eu-dc.metrics.prod
-      - RETRY_JOIN_IP=10.5.0.5
+      - RETRY_JOIN_IP=10.10.0.5
       - NODE_ENV=metrics
       - NODE_STAGE=prod
     networks:
       vpc_consul:
-        ipv4_address: 10.5.10.1
+        ipv4_address: 10.10.10.1
   node-02-eu-dc-metrics.prod:
     depends_on: *agent_deps
     build: *consul_svc_image_build
@@ -147,12 +147,12 @@ services:
       - DATA_CENTER=eu-dc
       - DATA_DIR=/consul/home
       - NODE_NAME=node-02.eu-dc.metrics.prod
-      - RETRY_JOIN_IP=10.5.0.5
+      - RETRY_JOIN_IP=10.10.0.5
       - NODE_ENV=metrics
       - NODE_STAGE=prod
     networks:
       vpc_consul:
-        ipv4_address: 10.5.10.2
+        ipv4_address: 10.10.10.2
   node-01-eu-dc-metrics.test:
     depends_on: *agent_deps
     build: *consul_svc_image_build
@@ -162,12 +162,12 @@ services:
       - DATA_CENTER=eu-dc
       - DATA_DIR=/consul/home
       - NODE_NAME=node-01.eu-dc.metrics.test
-      - RETRY_JOIN_IP=10.5.0.5
+      - RETRY_JOIN_IP=10.10.0.5
       - NODE_ENV=metrics
       - NODE_STAGE=test
     networks:
       vpc_consul:
-        ipv4_address: 10.5.10.3
+        ipv4_address: 10.10.10.3
   node-01-eu-dc-logs.test:
     depends_on: *agent_deps
     build: *consul_svc_image_build
@@ -177,12 +177,12 @@ services:
       - DATA_CENTER=eu-dc
       - DATA_DIR=/consul/home
       - NODE_NAME=node-01.eu-dc.logs.test
-      - RETRY_JOIN_IP=10.5.0.5
+      - RETRY_JOIN_IP=10.10.0.5
       - NODE_ENV=logs
       - NODE_STAGE=test
     networks:
       vpc_consul:
-        ipv4_address: 10.5.10.4
+        ipv4_address: 10.10.10.4
   node-01-eu-dc-logs.prod:
     depends_on: *agent_deps
     build: *consul_svc_image_build
@@ -192,12 +192,12 @@ services:
       - DATA_CENTER=eu-dc
       - DATA_DIR=/consul/home
       - NODE_NAME=node-01.eu-dc.logs.prod
-      - RETRY_JOIN_IP=10.5.0.5
+      - RETRY_JOIN_IP=10.10.0.5
       - NODE_ENV=logs
       - NODE_STAGE=prod
     networks:
       vpc_consul:
-        ipv4_address: 10.5.10.5
+        ipv4_address: 10.10.10.5
   node-02-eu-dc-logs.prod:
     depends_on: *agent_deps
     build: *consul_svc_image_build
@@ -207,12 +207,12 @@ services:
       - DATA_CENTER=eu-dc
       - DATA_DIR=/consul/home
       - NODE_NAME=node-02.eu-dc.logs.prod
-      - RETRY_JOIN_IP=10.5.0.5
+      - RETRY_JOIN_IP=10.10.0.5
       - NODE_ENV=logs
       - NODE_STAGE=prod
     networks:
       vpc_consul:
-        ipv4_address: 10.5.10.6
+        ipv4_address: 10.10.10.6
   # EU-DC2
   node-03-eu-dc2-logs.prod:
     depends_on: *agent_deps
@@ -223,12 +223,12 @@ services:
       - DATA_CENTER=eu-dc2
       - DATA_DIR=/consul/home
       - NODE_NAME=node-03.eu-dc2.logs.prod
-      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - RETRY_JOIN_IP=10.10.0.5,10.10.0.6,10.10.0.7,10.10.0.8
       - NODE_ENV=logs
       - NODE_STAGE=prod
     networks:
       vpc_consul:
-        ipv4_address: 10.5.20.1
+        ipv4_address: 10.10.20.1
   node-01-eu-dc2-backups.prod:
     depends_on: *agent_deps
     build: *consul_svc_image_build
@@ -238,12 +238,12 @@ services:
       - DATA_CENTER=eu-dc2
       - DATA_DIR=/consul/home
       - NODE_NAME=node-01.eu-dc2.backups.prod
-      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - RETRY_JOIN_IP=10.10.0.5,10.10.0.6,10.10.0.7,10.10.0.8
       - NODE_ENV=backups
       - NODE_STAGE=prod
     networks:
       vpc_consul:
-        ipv4_address: 10.5.20.2
+        ipv4_address: 10.10.20.2
   node-02-eu-dc2-backups.prod:
     depends_on: *agent_deps
     build: *consul_svc_image_build
@@ -253,12 +253,12 @@ services:
       - DATA_CENTER=eu-dc2
       - DATA_DIR=/consul/home
       - NODE_NAME=node-02.eu-dc2.backups.prod
-      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - RETRY_JOIN_IP=10.10.0.5,10.10.0.6,10.10.0.7,10.10.0.8
       - NODE_ENV=backups
       - NODE_STAGE=prod
     networks:
       vpc_consul:
-        ipv4_address: 10.5.20.3
+        ipv4_address: 10.10.20.3
   # US-DC
   node-01-us-dc1-backups.test:
     depends_on: *agent_deps
@@ -269,12 +269,12 @@ services:
       - DATA_CENTER=us-dc
       - DATA_DIR=/consul/home
       - NODE_NAME=node-01.us-dc.backups.prod
-      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - RETRY_JOIN_IP=10.10.0.5,10.10.0.6,10.10.0.7,10.10.0.8
       - NODE_ENV=backups
       - NODE_STAGE=test
     networks:
       vpc_consul:
-        ipv4_address: 10.5.30.1
+        ipv4_address: 10.10.30.1
   node-02-us-dc1-backups.test:
     depends_on: *agent_deps
     build: *consul_svc_image_build
@@ -284,12 +284,12 @@ services:
       - DATA_CENTER=us-dc
       - DATA_DIR=/consul/home
       - NODE_NAME=node-02.us-dc.backups.test
-      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - RETRY_JOIN_IP=10.10.0.5,10.10.0.6,10.10.0.7,10.10.0.8
       - NODE_ENV=backups
       - NODE_STAGE=test
     networks:
       vpc_consul:
-        ipv4_address: 10.5.30.2
+        ipv4_address: 10.10.30.2
   node-01-us-dc1-app.prod:
     depends_on: *agent_deps
     build: *consul_svc_image_build
@@ -299,12 +299,12 @@ services:
       - DATA_CENTER=us-dc
       - DATA_DIR=/consul/home
       - NODE_NAME=node-01.us-dc.app.prod
-      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - RETRY_JOIN_IP=10.10.0.5,10.10.0.6,10.10.0.7,10.10.0.8
       - NODE_ENV=app
       - NODE_STAGE=prod
     networks:
       vpc_consul:
-        ipv4_address: 10.5.30.3
+        ipv4_address: 10.10.30.3
   # ASIA-DC
   node-01-asia-dc1-app.test:
     depends_on: *agent_deps
@@ -315,21 +315,15 @@ services:
       - DATA_CENTER=asia-dc
       - DATA_DIR=/consul/home
       - NODE_NAME=node-01.asia-dc.app.test
-      - RETRY_JOIN_IP=10.5.0.5,10.5.0.6,10.5.0.7,10.5.0.8
+      - RETRY_JOIN_IP=10.10.0.5,10.10.0.6,10.10.0.7,10.10.0.8
       - NODE_ENV=app
       - NODE_STAGE=test
     networks:
       vpc_consul:
-        ipv4_address: 10.5.40.1
-
-
-#   - backups.prod
-#   - backups.test
-#   - app.prod
-#   - app.test
+        ipv4_address: 10.10.40.1
 
 networks:
   vpc_consul:
     ipam:
       config:
-        - subnet: 10.5.0.0/16
+        - subnet: 10.10.0.0/16

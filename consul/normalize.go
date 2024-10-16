@@ -11,9 +11,7 @@ func NormalizeCatalog(catalog []*consulapi.CatalogService) (types.FleetCatalog, 
 		return types.FleetCatalog{}, nil // Nothing to do?
 	}
 
-	result := types.FleetCatalog{
-		types.FleetAll: []types.FleetItem{},
-	}
+	result := types.FleetCatalog{}
 
 	for _, service := range catalog {
 		serviceType := types.FleetTagsToFleetType(service.ServiceTags)
@@ -21,12 +19,12 @@ func NormalizeCatalog(catalog []*consulapi.CatalogService) (types.FleetCatalog, 
 		if _, fleetTypeDefined := result[serviceType]; !fleetTypeDefined {
 			result[serviceType] = []types.FleetItem{}
 		}
-		fleetItem := types.FleetItem{
+		result[serviceType] = append(result[serviceType], types.FleetItem{
+			Type:    serviceType,
+			ID:      service.ID,
 			Node:    service.Node,
 			Address: service.ServiceAddress,
-		}
-		result[types.FleetAll] = append(result[types.FleetAll], fleetItem)
-		result[serviceType] = append(result[serviceType], fleetItem)
+		})
 	}
 
 	return result, nil

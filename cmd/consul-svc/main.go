@@ -28,6 +28,7 @@ func init() {
 }
 
 func main() {
+	//nolint:errcheck
 	register()
 
 	log.Fatal(runHTTPServer(httpSvcPost))
@@ -78,9 +79,9 @@ func register() error {
 		return fmt.Errorf("failed to create consul client: %w", err)
 	}
 
-	localIp, err := findLocalIP("10.5.0.0/16")
+	localIp, err := findLocalIP("10.10.0.0/16")
 	if err != nil {
-		localIp = &[]net.IP{net.ParseIP("10.5.0.10")}[0]
+		localIp = &[]net.IP{net.ParseIP("10.10.0.10")}[0]
 	}
 
 	registeration := &consulapi.AgentServiceRegistration{

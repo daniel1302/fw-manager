@@ -3,6 +3,7 @@ module github.com/daniel1302/fw-manager
 go 1.22.3
 
 require (
+	github.com/coreos/go-iptables v0.8.0
 	github.com/hashicorp/consul/api v1.29.5
 	github.com/stretchr/testify v1.8.4
 )
