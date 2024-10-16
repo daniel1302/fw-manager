@@ -1,6 +1,8 @@
+#misc 
 consul-home
 certs
 **/__debug*
+project-notes.txt
 
 # binaries
 ./consul-svc
