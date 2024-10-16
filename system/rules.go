@@ -6,8 +6,9 @@ type (
 	RuleIP       string
 	RulePort     int
 	FirewallRule struct {
-		IP   RuleIP
-		Port RulePort
+		IP      RuleIP
+		Port    RulePort
+		RawRule string
 	}
 )
 
