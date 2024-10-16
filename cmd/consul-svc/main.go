@@ -4,8 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 
+	"github.com/daniel1302/fw-manager/system"
 	consulapi "github.com/hashicorp/consul/api"
 )
 
@@ -48,6 +50,27 @@ func (svc *SvcHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	svc.counter++
 }
 
+func findLocalIP(cidr string) (*net.IP, error) {
+	localIPs, err := system.GetLocalIPs()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get local ip addresses: %w", err)
+	}
+
+	_, localCIDR, err := net.ParseCIDR(cidr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse cidr: %w", err)
+	}
+
+	for idx, localIp := range localIPs {
+		if localCIDR.Contains(localIp) {
+			return &localIPs[idx], nil
+		}
+	}
+
+	// todo: We really do not want this service to fail. In future we should create custom error.
+	return nil, nil
+}
+
 func register() error {
 	config := consulapi.DefaultConfig()
 	consul, err := consulapi.NewClient(config)
@@ -55,11 +78,16 @@ func register() error {
 		return fmt.Errorf("failed to create consul client: %w", err)
 	}
 
+	localIp, err := findLocalIP("10.5.0.0/16")
+	if err != nil {
+		localIp = &[]net.IP{net.ParseIP("10.5.0.10")}[0]
+	}
+
 	registeration := &consulapi.AgentServiceRegistration{
 		ID:      svcName,
 		Name:    svcName,
 		Port:    httpSvcPost,
-		Address: svcAddr,
+		Address: localIp.String(),
 		Check: &consulapi.AgentServiceCheck{
 			HTTP:     fmt.Sprintf("http://%s:%v/check", svcAddr, httpSvcPost),
 			Interval: "10s",
